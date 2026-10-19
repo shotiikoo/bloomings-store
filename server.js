@@ -188,6 +188,43 @@ function nowParts() {
 }
 const fail = (code, msg) => { const e = new Error(msg || code); e.code = code; return e; };
 
+
+/* ---------- new-order notifications (optional, via env vars) ---------- */
+function orderText(o) {
+  const lines = ['🌸 ახალი შეკვეთა ' + o.no, 'სახელი: ' + o.name, 'ტელეფონი: ' + o.phone,
+    (o.mode === 'delivery' ? 'მიტანა: ' + o.address : 'აიღებს მაღაზიაში'), 'თარიღი: ' + o.date + ' ' + o.time, ''];
+  for (const i of o.items) lines.push('• ' + i.name + ' ×' + i.qty + (i.detail ? '\n   ' + i.detail : ''));
+  lines.push('', 'ჯამი: ' + o.total + ' ₾' + (o.deliveryFee ? ' (მიტანა ' + o.deliveryFee + ' ₾)' : ''));
+  return lines.join('\n').slice(0, 1500);
+}
+function notify(o) {
+  const text = orderText(o), jobs = [];
+  const E = process.env;
+  if (E.TELEGRAM_BOT_TOKEN && E.TELEGRAM_CHAT_ID) {
+    jobs.push(['telegram', fetch('https://api.telegram.org/bot' + encodeURIComponent(E.TELEGRAM_BOT_TOKEN) + '/sendMessage', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: E.TELEGRAM_CHAT_ID, text }), signal: AbortSignal.timeout(8000)
+    })]);
+  }
+  if (E.CALLMEBOT_PHONE && E.CALLMEBOT_APIKEY) {
+    jobs.push(['whatsapp', fetch('https://api.callmebot.com/whatsapp.php?' + new URLSearchParams({ phone: E.CALLMEBOT_PHONE, text, apikey: E.CALLMEBOT_APIKEY }),
+      { signal: AbortSignal.timeout(10000) })]);
+  }
+  if (E.WA_TOKEN && E.WA_PHONE_ID && E.WA_TO) {
+    const flat = text.replace(/\s*\n\s*/g, ' | ').replace(/ {2,}/g, ' ').slice(0, 900);
+    const msg = E.WA_TEMPLATE
+      ? { type: 'template', template: { name: E.WA_TEMPLATE, language: { code: E.WA_LANG || 'ka' }, components: [{ type: 'body', parameters: [{ type: 'text', text: flat }] }] } }
+      : { type: 'text', text: { body: text } };
+    jobs.push(['whatsapp-cloud', fetch('https://graph.facebook.com/v21.0/' + encodeURIComponent(E.WA_PHONE_ID) + '/messages', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + E.WA_TOKEN },
+      body: JSON.stringify(Object.assign({ messaging_product: 'whatsapp', to: String(E.WA_TO).replace(/\D/g, '') }, msg)), signal: AbortSignal.timeout(10000)
+    })]);
+  }
+  for (const [name, pr] of jobs) {
+    pr.then(r => { if (!r.ok) console.error('notify ' + name + ' failed: HTTP ' + r.status); })
+      .catch(e => console.error('notify ' + name + ' failed: ' + (e && e.name || 'error')));
+  }
+}
 function buildOrder(body) {
   if (!isObj(body)) throw fail('bad');
   const S = db.settings;
@@ -310,7 +347,7 @@ async function api(req, res, p) {
     if (!hit('ord:' + ip, 10, 3600e3)) return send(res, 429, { error: 'rate' });
     if (db.orders.length >= 5000) return send(res, 503, { error: 'full' });
     try {
-      const o = buildOrder(body); db.orders.unshift(o); save();
+      const o = buildOrder(body); db.orders.unshift(o); save(); try { notify(o); } catch (e) {}
       return send(res, 200, { no: o.no, total: o.total });
     } catch (e) {
       if (!e.code) { console.error(e); return send(res, 500, { error: 'server' }); }
