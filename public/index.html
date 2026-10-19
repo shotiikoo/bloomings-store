@@ -159,6 +159,8 @@ fieldset{border:0;padding:0;margin:14px 0 0}legend{font-weight:700;padding:0}
 .opt:has(input:checked){border-color:var(--coral);background:var(--band)}
 .opt small{color:var(--mute);display:block}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.two>div{min-width:0}input[type=date],input[type=time]{min-width:0;max-width:100%;-webkit-appearance:none;appearance:none;display:block;min-height:46px;text-align:left}
+@media(max-width:480px){.two{grid-template-columns:1fr}}
 .tot{padding:14px 20px;border-top:1px solid var(--line);background:var(--surf)}
 .tot div{display:flex;justify-content:space-between}
 .tot .g{font:700 1.2rem Fraunces,"Noto Serif Georgian",serif;margin:4px 0 10px}
