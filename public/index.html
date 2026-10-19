@@ -149,6 +149,17 @@ fieldset{border:0;padding:0;margin:14px 0 0}legend{font-weight:700;padding:0}
 .ok img{width:110px}
 .hide{display:none!important}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+.fth{width:46px;height:46px;border-radius:50%;border:2px solid var(--coral);flex:none;padding:0;background:none;overflow:hidden;cursor:zoom-in}.fth img{width:100%;height:100%;object-fit:cover;display:block}
+.card .ph,.card>svg{cursor:zoom-in}
+#zoom{position:fixed;inset:0;z-index:30;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(40,15,8,.82)}
+#zoom.on{display:flex}
+#zoom .zb{position:relative;background:#FFF3F0;color:#3A1409;border-radius:22px;max-width:min(94vw,720px);max-height:94vh;overflow:auto;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+#zoom .zi{display:block;width:100%;max-height:68vh;object-fit:contain;background:#fff}
+#zoom .zi svg{display:block;width:100%;height:auto;max-height:68vh}
+#zoom .zt{padding:14px 20px 18px;display:flex;flex-direction:column;gap:6px}
+#zoom h3{margin:0;font-size:1.3rem}#zoom p{margin:0;color:#5A2A22}
+#zoom .zx{position:absolute;top:10px;right:10px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.92);font-size:1.5rem;line-height:1;cursor:pointer;color:#3A1409;z-index:2}
 </style>
 </head>
 <body>
@@ -205,6 +216,7 @@ fieldset{border:0;padding:0;margin:14px 0 0}legend{font-weight:700;padding:0}
 </div></footer>
 
 <div id="shade"></div>
+<div id="zoom" role="dialog" aria-modal="true" aria-hidden="true"><div class="zb"><button type="button" class="zx" id="zclose">×</button><div id="zimg"></div><div class="zt" id="ztxt"></div></div></div>
 <aside id="drawer" aria-hidden="true">
 <div class="dh"><h2 data-i="cartT"></h2><button class="x" id="close">✕</button></div>
 <div class="db" id="body"></div>
@@ -222,7 +234,7 @@ let FEE=8,LIVE=false,OPEN=11,CLOSE=23;const $=s=>document.querySelector(s),pad=n
 const D={en:{nav1:"Bouquets",nav2:"How it works",cart:"Cart",
 h1:"Fresh bouquets, picked by you.",hp:"Choose your flowers online, pay securely, then collect them in person or have them delivered to your door.",cta:"Choose a bouquet",
 w1t:"Order online",w1d:"Browse the bouquets and pay securely on the site.",w2t:"Reserve and collect",w2d:"Pick a time and we will have it ready at the shop.",w3t:"Delivery",w3d:"Give us an address and we bring it to the door.",
-shop:"Our bouquets",filt:"Filter bouquets",c_All:"All",c_Roses:"Roses",c_Mixed:"Mixed",c_Gifts:"Gifts",add:"Add to cart",
+shop:"Our bouquets",filt:"Filter bouquets",c_All:"All",c_Roses:"Roses",c_Mixed:"Mixed",c_Gifts:"Gifts",add:"Add to cart",zClose:"Close",
 how:"How it works",s1t:"Pick your bouquets",s1d:"Add as many as you like to the cart.",s2t:"Choose pickup or delivery",s2d:"Select a date and time, or enter the delivery address.",s3t:"Pay and confirm",s3d:"Pay online to confirm your order. You get an order number.",
 foot:"Est. 2026 · Daily {h}",cartT:"Your cart",closeL:"Close cart",openL:"Open cart",subL:"Bouquets",delL:"Delivery",allL:"Total",free:"Free",go:"Place order",
 empty:"Your cart is empty. Add a bouquet to start your order.",each:"each",rm:"Remove one",ad1:"Add one",name:"Your name",phone:"Phone number",
@@ -233,7 +245,7 @@ thanks:n=>`Thank you, ${n}!`,ordC:o=>`Order <b>${o}</b> is confirmed.`,colT:(d,t
 ka:{nav1:"თაიგულები",nav2:"როგორ მუშაობს",cart:"კალათა",
 h1:"ახალი თაიგულები, თქვენი არჩევით.",hp:"აირჩიეთ ყვავილები ონლაინ, გადაიხადეთ უსაფრთხოდ, შემდეგ აიღეთ მაღაზიაში ან მოგიტანთ მისამართზე.",cta:"აირჩიეთ თაიგული",
 w1t:"შეუკვეთეთ ონლაინ",w1d:"დაათვალიერეთ თაიგულები და გადაიხადეთ უსაფრთხოდ საიტზე.",w2t:"დაჯავშნეთ და აიღეთ",w2d:"აირჩიეთ დრო და მაღაზიაში მზად დაგხვდებათ.",w3t:"მიტანა",w3d:"მიუთითეთ მისამართი და კარამდე მოგიტანთ.",
-shop:"ჩვენი თაიგულები",filt:"თაიგულების გაფილტვრა",c_All:"ყველა",c_Roses:"ვარდები",c_Mixed:"შერეული",c_Gifts:"საჩუქრები",add:"კალათაში დამატება",
+shop:"ჩვენი თაიგულები",filt:"თაიგულების გაფილტვრა",c_All:"ყველა",c_Roses:"ვარდები",c_Mixed:"შერეული",c_Gifts:"საჩუქრები",zClose:"დახურვა",add:"კალათაში დამატება",
 how:"როგორ მუშაობს",s1t:"აირჩიეთ თაიგულები",s1d:"დაამატეთ კალათაში რამდენიც გსურთ.",s2t:"აირჩიეთ აღება ან მიტანა",s2d:"მიუთითეთ თარიღი და დრო, ან მიტანის მისამართი.",s3t:"გადაიხადეთ და დაადასტურეთ",s3d:"შეკვეთის დასადასტურებლად გადაიხადეთ ონლაინ. მიიღებთ შეკვეთის ნომერს.",
 foot:"დაარსდა 2026 · ყოველდღე {h}",cartT:"თქვენი კალათა",closeL:"კალათის დახურვა",openL:"კალათის გახსნა",subL:"თაიგულები",delL:"მიტანა",allL:"ჯამი",free:"უფასო",go:"შეკვეთის გაფორმება",
 empty:"კალათა ცარიელია. დაამატეთ თაიგული შეკვეთის დასაწყებად.",each:"ერთი",rm:"ერთით შემცირება",ad1:"ერთით გაზრდა",name:"თქვენი სახელი",phone:"ტელეფონის ნომერი",
@@ -254,7 +266,7 @@ return `<svg viewBox="0 0 260 180" role="img" aria-label="${pn(p)}"><rect width=
 const cats=()=>[...new Set(P.map(p=>p.cat))];
 const catL=c=>{if(c=="All")return t("c_All");const p=P.find(x=>x.cat==c);return lang=="ka"&&p&&p.catK?p.catK:c};
 function chips(){$("#chips").innerHTML=["All",...cats()].map(c=>`<button class="chip" aria-pressed="${c==cat}" data-c="${esc(c)}">${esc(catL(c))}</button>`).join("")}
-function grid(){$("#grid").innerHTML=P.filter(p=>cat=="All"||p.cat==cat).map(p=>`<article class="card${p.inStock?"":" sold"}">${art(p)}<div class="b"><h3>${esc(pn(p))}</h3><p>${esc(pd(p))}</p><div class="row"><span class="price">${gel(p.p)}</span>${p.inStock?`<button class="btn alt" data-add="${esc(p.id)}">${t("add")}</button>`:`<button class="btn alt" disabled>${t("sold")}</button>`}</div></div></article>`).join("")||`<p>${t("noP")}</p>`}
+function grid(){$("#grid").innerHTML=P.filter(p=>cat=="All"||p.cat==cat).map(p=>`<article class="card${p.inStock?"":" sold"}" data-z="${esc(p.id)}">${art(p)}<div class="b"><h3>${esc(pn(p))}</h3><p>${esc(pd(p))}</p><div class="row"><span class="price">${gel(p.p)}</span>${p.inStock?`<button class="btn alt" data-add="${esc(p.id)}">${t("add")}</button>`:`<button class="btn alt" disabled>${t("sold")}</button>`}</div></div></article>`).join("")||`<p>${t("noP")}</p>`}
 function statics(){
 document.documentElement.lang=lang;
 document.querySelectorAll("[data-i]").forEach(e=>e.textContent=String(t(e.dataset.i)).replace("{h}",pad(OPEN)+":00–"+pad(CLOSE)+":00"));
@@ -263,7 +275,17 @@ document.querySelectorAll(".lang button").forEach(b=>b.setAttribute("aria-presse
 chips();grid();buildUI();render();const nb=!FL.length||!ST.length;$("#build").classList.toggle("hide",nb);document.querySelectorAll('a[href="#build"]').forEach(a=>a.classList.toggle("hide",nb))}
 document.querySelector(".lang").onclick=e=>{const l=e.target.dataset.l;if(l&&l!=lang){lang=l;try{localStorage.setItem("bl-lang",l)}catch(x){}statics()}};
 $("#chips").onclick=e=>{const c=e.target.dataset.c;if(c){cat=c;chips();grid()}};
-$("#grid").onclick=e=>{const a=e.target.dataset.add;if(a){cart[a]=(cart[a]||0)+1;done=false;render();const o=$("#open");o.classList.remove("bump");void o.offsetWidth;o.classList.add("bump");openCart()}};
+$("#grid").onclick=e=>{const a=e.target.dataset.add;if(!a){const c=e.target.closest("[data-z]");if(c&&!e.target.closest("button"))zoomP(c.dataset.z);return}if(a){cart[a]=(cart[a]||0)+1;done=false;render();const o=$("#open");o.classList.remove("bump");void o.offsetWidth;o.classList.add("bump");openCart()}};
+
+let zlast=null;
+function zshow(inner,title,desc,foot){zlast=document.activeElement;$("#zimg").innerHTML=inner;$("#ztxt").innerHTML=`<h3>${esc(title)}</h3>`+(desc?`<p>${esc(desc)}</p>`:"")+(foot||"");const z=$("#zoom");z.classList.add("on");z.setAttribute("aria-hidden","false");$("#zclose").setAttribute("aria-label",t("zClose"));document.body.classList.add("lock");$("#zclose").focus()}
+function zoomP(id){const p=P.find(x=>x.id==id);if(!p)return;const im=p.img?`<img class="zi" src="${esc(p.img)}" alt="${esc(pn(p))}">`:art(p);
+zshow(im,pn(p),pd(p),`<div class="row"><span class="price">${gel(p.p)}</span>${p.inStock?`<button class="btn alt" id="zadd">${t("add")}</button>`:`<button class="btn alt" disabled>${t("sold")}</button>`}</div>`);
+const b=$("#zadd");if(b)b.onclick=()=>{closeZoom();cart[p.id]=(cart[p.id]||0)+1;done=false;render();const o=$("#open");o.classList.remove("bump");void o.offsetWidth;o.classList.add("bump");openCart()}}
+function zoomF(id){const f=FL.find(x=>x.id==id);if(!f||!f.img)return;zshow(`<img class="zi" src="${esc(f.img)}" alt="${esc(L2(f))}">`,L2(f),"",`<p>${gel(f.p)} ${t("perStem")}</p>`)}
+function closeZoom(){const z=$("#zoom");if(!z.classList.contains("on"))return;z.classList.remove("on");z.setAttribute("aria-hidden","true");if(!$("#drawer").classList.contains("on"))document.body.classList.remove("lock");try{zlast&&zlast.focus()}catch(e){}}
+$("#zclose").onclick=closeZoom;$("#zoom").onclick=e=>{if(e.target.id=="zoom")closeZoom()};
+document.addEventListener("keydown",e=>{if(e.key=="Escape")closeZoom()});
 function openCart(){document.body.classList.add("lock");$("#drawer").classList.add("on");$("#shade").classList.add("on");$("#drawer").setAttribute("aria-hidden","false");$("#close").focus()}
 function closeCart(){document.body.classList.remove("lock");$("#drawer").classList.remove("on");$("#shade").classList.remove("on");$("#drawer").setAttribute("aria-hidden","true")}
 $("#open").onclick=openCart;$("#close").onclick=closeCart;$("#shade").onclick=closeCart;
@@ -351,7 +373,7 @@ const pts=hd.map((f,i)=>{const q=Math.sqrt((i+.5)/m),a=i*2.39996;return{f,x:150+
 const st=pts.map(o=>`<line x1="150" y1="178" x2="${o.x.toFixed(1)}" y2="${o.y.toFixed(1)}" stroke="#6F8F5A" stroke-width="3"/>`).join("");
 const lv=gr.map((f,i)=>{const th=gr.length>1?-70+140*i/(gr.length-1):0,a=th*Math.PI/180,lx=150+98*Math.sin(a),ly=178-98*Math.cos(a);
 return `<line x1="150" y1="178" x2="${lx.toFixed(1)}" y2="${ly.toFixed(1)}" stroke="#6F8F5A" stroke-width="3"/><ellipse cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" rx="11" ry="32" fill="#8FB07A" stroke="rgba(0,0,0,.25)" stroke-width="1.5" transform="rotate(${th} ${lx.toFixed(1)} ${ly.toFixed(1)})"/>`}).join("");
-const hs=pts.map(o=>head(o.f,o.x,o.y,hr)).join("");
+const hs=pts.map((o,i)=>o.f.img?`<clipPath id="hc${i}"><circle cx="${o.x.toFixed(1)}" cy="${o.y.toFixed(1)}" r="${hr}"/></clipPath><image href="${esc(o.f.img)}" x="${(o.x-hr).toFixed(1)}" y="${(o.y-hr).toFixed(1)}" width="${(hr*2).toFixed(1)}" height="${(hr*2).toFixed(1)}" preserveAspectRatio="xMidYMid slice" clip-path="url(#hc${i})"/><circle cx="${o.x.toFixed(1)}" cy="${o.y.toFixed(1)}" r="${hr}" fill="none" stroke="#fff" stroke-width="1.5"/>`:head(o.f,o.x,o.y,hr)).join("");
 const S=shape(ST[bs.style].shape,w,rb);
 return `<svg viewBox="0 0 300 300" role="img" aria-label="${t("bTitle")}">${S.b}${lv}${st}${hs}${S.f}</svg>`}
 function upd(){
@@ -364,7 +386,7 @@ const n=stems();$("#bsvg").innerHTML=bsvg();
 $("#bcount").textContent=n+" "+t("stems");$("#btotal").textContent=gel(n?price(bs.q,bs.style):0);
 $("#badd").disabled=n<MINS;$("#bhint").textContent=n==0?t("bEmpty"):n<MINS?t("bMin"):""}
 function buildUI(){
-$("#bctl").innerHTML=`<h3>${t("bFl")}</h3>`+FL.map(f=>`<div class="fr${f.inStock?"":" sold"}"><span class="dot" style="background:${esc(f.c)}"></span><span class="fn">${esc(L2(f))}<small>${f.inStock?gel(f.p)+" "+t("perStem"):t("sold")}</small></span><div class="q"><button type="button" data-f="${esc(f.id)}" data-d="-1" aria-label="${t("rm")}: ${esc(L2(f))}">−</button><input class="qn" id="q_${esc(f.id)}" type="number" inputmode="numeric" min="0" max="${MAXS}" value="0" aria-label="${esc(L2(f))}"${f.inStock?"":" disabled"}><button type="button" data-f="${esc(f.id)}" data-d="1" aria-label="${t("ad1")}: ${esc(L2(f))}"${f.inStock?"":" disabled"}>+</button></div></div>`).join("")+
+$("#bctl").innerHTML=`<h3>${t("bFl")}</h3>`+FL.map(f=>`<div class="fr${f.inStock?"":" sold"}">${f.img?`<button type="button" class="fth" data-zf="${esc(f.id)}" aria-label="${esc(L2(f))}"><img src="${esc(f.img)}" alt="" loading="lazy"></button>`:`<span class="dot" style="background:${esc(f.c)}"></span>`}<span class="fn">${esc(L2(f))}<small>${f.inStock?gel(f.p)+" "+t("perStem"):t("sold")}</small></span><div class="q"><button type="button" data-f="${esc(f.id)}" data-d="-1" aria-label="${t("rm")}: ${esc(L2(f))}">−</button><input class="qn" id="q_${esc(f.id)}" type="number" inputmode="numeric" min="0" max="${MAXS}" value="0" aria-label="${esc(L2(f))}"${f.inStock?"":" disabled"}><button type="button" data-f="${esc(f.id)}" data-d="1" aria-label="${t("ad1")}: ${esc(L2(f))}"${f.inStock?"":" disabled"}>+</button></div></div>`).join("")+
 `<h3>${t("styleH")} <small id="sn"></small></h3><div class="stys" id="ssw">${ST.map((s,i)=>`<button type="button" class="sty" data-s="${i}" aria-pressed="false"><span class="th"></span><span>${esc(L2(s))}</span></button>`).join("")}</div>
 <h3>${t("wrapH")} <small id="wn"></small></h3><div class="sws" id="wsw">${WR.map((w,i)=>`<button type="button" class="sw" data-w="${i}" style="background:${w.c}" aria-label="${L2(w)}" aria-pressed="false"></button>`).join("")}</div>
 <h3>${t("ribH")} <small id="rn"></small></h3><div class="sws" id="rsw">${RB.map((w,i)=>`<button type="button" class="sw" data-r="${i}" style="background:${w.c}" aria-label="${L2(w)}" aria-pressed="false"></button>`).join("")}</div>
@@ -372,7 +394,7 @@ $("#bctl").innerHTML=`<h3>${t("bFl")}</h3>`+FL.map(f=>`<div class="fr${f.inStock
 <p class="bsvc">${t("bSvc")}: ${gel(SVC)}</p>
 <div class="bact"><button type="button" class="btn alt" id="bclear">${t("bClear")}</button><button type="button" class="btn" id="badd">${t("bAdd")}</button></div>`;
 upd()}
-$("#bctl").onclick=e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;
+$("#bctl").onclick=e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;if(d.zf){zoomF(d.zf);return}
 if(d.f){const v=(bs.q[d.f]||0)+ +d.d;if(v<0)return;if(+d.d>0&&stems()>=MAXS){upd();$("#bhint").textContent=t("bMax");return}bs.q[d.f]=v;upd()}
 else if(d.s!=null){bs.style=+d.s;upd()}else if(d.w!=null){bs.wrap=+d.w;upd()}else if(d.r!=null){bs.rib=+d.r;upd()}
 else if(b.id=="bclear"){bs.q={};upd()}else if(b.id=="badd")addCustom()};
