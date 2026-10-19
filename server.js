@@ -266,7 +266,7 @@ function readBody(req, limit) {
     req.on('error', bad);
   });
 }
-const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.txt': 'text/plain; charset=utf-8' };
+const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json', '.png': 'image/png', '.webmanifest': 'application/manifest+json', '.ico': 'image/x-icon', '.xml': 'application/xml', '.txt': 'text/plain; charset=utf-8', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.txt': 'text/plain; charset=utf-8' };
 function serveFile(req, res, baseDir, rel, cache) {
   const parts = rel.split('/').filter(Boolean);
   if (parts.some(p => p.startsWith('.') || p.includes('\0'))) return notFound(res);
@@ -388,6 +388,22 @@ async function handle(req, res) {
   if (p === '/' + SLUG || p === '/' + SLUG + '/') {
     res.setHeader('X-Robots-Tag', 'noindex, nofollow');
     return serveFile(req, res, path.join(__dirname, 'views'), 'admin.html', 'no-store');
+  }
+  const origin = () => {
+    if (process.env.SITE_URL && /^https?:\/\/[a-z0-9.:-]+$/i.test(process.env.SITE_URL)) return process.env.SITE_URL;
+    const host = String(req.headers.host || '').toLowerCase();
+    const proto = HOPS > 0 && /^https$/i.test(String(req.headers['x-forwarded-proto'] || '').split(',')[0].trim()) ? 'https' : 'http';
+    return /^[a-z0-9.-]+(:\d+)?$/.test(host) ? proto + '://' + host : '';
+  };
+  if (p === '/robots.txt') { const o = origin(); res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'public, max-age=3600' }); return res.end('User-agent: *\nAllow: /\nDisallow: /api/\n' + (o ? 'Sitemap: ' + o + '/sitemap.xml\n' : '')); }
+  if (p === '/sitemap.xml') { const o = origin(); res.writeHead(200, { 'Content-Type': 'application/xml; charset=utf-8', 'Cache-Control': 'public, max-age=3600' }); return res.end('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>' + o + '/</loc></url></urlset>'); }
+  if (p === '/' || p === '/index.html') {
+    return fs.readFile(path.join(__dirname, 'public', 'index.html'), 'utf8', (e, t) => {
+      if (e) return notFound(res);
+      const body = Buffer.from(t.split('__ORIGIN__').join(origin()));
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Content-Length': body.length, 'Cache-Control': 'no-cache' });
+      res.end(req.method === 'HEAD' ? undefined : body);
+    });
   }
   if (p.startsWith('/uploads/')) return serveFile(req, res, UP_DIR, p.slice(9), 'public, max-age=604800, immutable');
   return serveFile(req, res, path.join(__dirname, 'public'), p, 'no-cache');
