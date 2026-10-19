@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ka">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#3B2419">
+<title>Bloomings · ადმინი</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Noto+Sans+Georgian:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--jasmine:#FFD581;--candy:#FF99A4;--coral:#FE6F61;--bg:#3B2419;--surf:#4A2F23;--surf2:#5A3A2C;--ink:#FFF1DC;--mute:#E2C3A8;--field:#FFF8EA;--fieldInk:#3A1409;--line:#6B4838;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "DM Sans","Noto Sans Georgian",system-ui,sans-serif;padding-bottom:90px}
+h1,h2,h3{margin:0;line-height:1.2}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+:focus-visible{outline:3px solid var(--jasmine);outline-offset:2px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+.top{background:var(--surf);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.top .wrap{display:flex;align-items:center;gap:12px;padding-top:10px;padding-bottom:10px;flex-wrap:wrap}
+.top h1{font-size:1.15rem;flex:1;min-width:140px}
+.top a{color:var(--mute)}
+.btn{border:0;border-radius:999px;padding:10px 20px;font-weight:700;background:var(--coral);color:#3A1409;text-decoration:none;display:inline-block;transition:transform .2s,box-shadow .2s}
+.btn.alt{background:var(--jasmine)}.btn.ghost{background:transparent;border:2px solid var(--candy);color:var(--ink)}
+.btn.sm{padding:6px 14px;font-size:.9rem}.btn.danger{background:transparent;border:2px solid #FF8A80;color:#FFB4AB}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+@media(hover:hover){.btn:hover:not(:disabled){transform:translateY(-2px)}}
+.btn:active:not(:disabled){transform:scale(.95)}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:14px 16px;margin:0 auto;max-width:1100px}
+.tab{flex:none;border:2px solid var(--candy);background:transparent;color:var(--ink);border-radius:999px;padding:8px 18px;font-weight:700}
+.tab[aria-pressed=true]{background:var(--candy);color:#3A1409}
+.badge{display:inline-block;background:var(--jasmine);color:#3A1409;border-radius:999px;padding:0 8px;margin-left:6px;font-size:.85rem}
+.head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:6px 0 16px}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px}
+.card.off{opacity:.65}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 14px}
+@media(max-width:640px){.grid2,.grid3{grid-template-columns:1fr}}
+.f{display:block}.f>span{display:block;color:var(--mute);font-size:.85rem;margin-bottom:3px}
+input[type=text],input[type=number],input[type=password],textarea,select{width:100%;padding:10px 12px;border:2px solid var(--line);border-radius:10px;background:var(--field);color:var(--fieldInk);font:inherit}
+textarea{resize:vertical;min-height:64px}
+input[type=color]{width:42px;height:42px;padding:2px;border:2px solid var(--line);border-radius:10px;background:var(--field);cursor:pointer}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.chk{display:flex;align-items:center;gap:8px;font-weight:500;cursor:pointer}
+.chk input{width:22px;height:22px;accent-color:var(--coral)}
+.bq{display:grid;grid-template-columns:150px 1fr;gap:16px}
+@media(max-width:640px){.bq{grid-template-columns:1fr}}
+.ph{width:150px;height:110px;border-radius:12px;background:var(--surf2);object-fit:cover;display:block;overflow:hidden}
+.ph.empty{display:grid;place-items:center;color:var(--mute);font-size:.8rem;text-align:center;padding:6px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.sp{flex:1}
+.note{color:var(--mute);font-size:.9rem;margin:0 0 14px}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--surf);border-top:2px solid var(--coral);padding:12px 16px;display:flex;gap:12px;align-items:center;justify-content:center;z-index:9;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--jasmine);color:#3A1409;padding:10px 20px;border-radius:999px;font-weight:700;z-index:10;box-shadow:0 8px 20px rgba(0,0,0,.4)}
+.toast.err{background:#FFB4AB}
+.login{max-width:380px;margin:12vh auto;padding:0 16px}
+.err{color:#FFB4AB;min-height:1.4em;margin:8px 0 0}
+.os{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.os b{font-size:1.15rem}.muted{color:var(--mute)}
+.items{margin:10px 0;padding:0;list-style:none}
+.items li{padding:6px 0;border-top:1px dashed var(--line)}
+.items small{display:block;color:var(--mute)}
+.tot{font-weight:700;font-size:1.1rem}
+.st-new{border-left:6px solid var(--jasmine)}.st-confirmed{border-left:6px solid var(--candy)}.st-ready{border-left:6px solid #9BD1A0}.st-done{border-left:6px solid var(--line)}.st-cancelled{border-left:6px solid #FF8A80}
+.empty{padding:30px;text-align:center;color:var(--mute)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const $ = s => document.querySelector(s);
+const h = (tag, props, ...kids) => {
+  const e = document.createElement(tag);
+  for (const k in props || {}) {
+    const v = props[k];
+    if (k === 'class') e.className = v;
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (k === 'value' || k === 'checked' || k === 'disabled') e[k] = v;
+    else if (v !== false && v != null) e.setAttribute(k, v);
+  }
+  kids.flat(9).forEach(c => { if (c == null || c === false) return; e.append(c.nodeType ? c : document.createTextNode(String(c))); });
+  return e;
+};
+const gel = n => (Math.round(n * 100) / 100) + ' ₾';
+const STATUS = { new: 'ახალი', confirmed: 'დადასტურებული', ready: 'მზადაა', done: 'გადაცემულია', cancelled: 'გაუქმებული' };
+const SHAPES = ['ქაღალდის კონუსი', 'მრგვალი ყუთი', 'კალათა', 'მინის ვაზა'];
+const KINDS = { default: 'ჩვეულებრივი ყვავილი', daisy: 'გვირილისებრი', gerbera: 'გერბერა', greenery: 'მწვანილი / ფოთლები' };
+
+let cat = null, orders = [], tab = 'orders', dirty = false, filter = 'all', poll = null, knownNew = 0;
+
+async function api(method, url, body) {
+  const r = await fetch(url, { method, credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'X-Admin-Key': location.pathname.replace(/\//g, '') }, body: method === 'GET' ? undefined : JSON.stringify(body || {}) });
+  let j = {}; try { j = await r.json(); } catch (e) {}
+  if (r.status === 401 && url !== '/api/admin/login') { showLogin(); throw new Error('auth'); }
+  if (!r.ok) { const e = new Error(j.error || 'error'); e.code = j.error; throw e; }
+  return j;
+}
+function toast(msg, bad) {
+  const t = h('div', { class: 'toast' + (bad ? ' err' : ''), role: 'status' }, msg);
+  document.body.append(t); setTimeout(() => t.remove(), 2600);
+}
+const mark = () => { if (!dirty) { dirty = true; drawBar(); } };
+
+/* ---------- login ---------- */
+function showLogin() {
+  clearInterval(poll); dirty = false;
+  const pw = h('input', { type: 'password', autocomplete: 'current-password', 'aria-label': 'პაროლი' });
+  const err = h('p', { class: 'err', role: 'alert' });
+  const go = async () => {
+    err.textContent = '';
+    try { await api('POST', '/api/admin/login', { password: pw.value }); start(); }
+    catch (e) { err.textContent = e.code === 'rate' ? 'ძალიან ბევრი მცდელობა. სცადეთ 15 წუთის შემდეგ.' : 'პაროლი არასწორია.'; }
+  };
+  pw.addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
+  $('#app').replaceChildren(h('div', { class: 'login' }, h('div', { class: 'card' },
+    h('h1', null, 'Bloomings Store'), h('p', { class: 'note' }, 'ადმინისტრატორის შესვლა'),
+    h('label', { class: 'f' }, h('span', null, 'პაროლი'), pw), err,
+    h('div', { class: 'row', style: 'margin-top:12px' }, h('button', { class: 'btn', onclick: go }, 'შესვლა')))));
+  pw.focus();
+}
+
+/* ---------- shell ---------- */
+async function start() {
+  try {
+    cat = await api('GET', '/api/admin/catalog');
+    orders = await api('GET', '/api/admin/orders');
+  } catch (e) { return; }
+  knownNew = orders.filter(o => o.status === 'new').length;
+  dirty = false; draw();
+  clearInterval(poll); poll = setInterval(refreshOrders, 45000);
+}
+async function refreshOrders() {
+  try {
+    orders = await api('GET', '/api/admin/orders');
+    const n = orders.filter(o => o.status === 'new').length;
+    if (n > knownNew) toast('ახალი შეკვეთა მივიღეთ!');
+    knownNew = n;
+    if (tab === 'orders' && !document.activeElement.closest?.('select')) drawBody(); else drawTabs();
+  } catch (e) {}
+}
+function draw() {
+  $('#app').replaceChildren(
+    h('div', { class: 'top' }, h('div', { class: 'wrap' }, h('h1', null, 'Bloomings Store · ადმინი'),
+      h('a', { href: '/', target: '_blank', rel: 'noopener' }, 'საიტის ნახვა'),
+      h('button', { class: 'btn ghost sm', onclick: async () => { if (dirty && !confirm('შეუნახავი ცვლილებები დაიკარგება. გასვლა?')) return; try { await api('POST', '/api/admin/logout'); } catch (e) {} showLogin(); } }, 'გასვლა'))),
+    h('div', { class: 'tabs', id: 'tabs' }), h('div', { class: 'wrap', id: 'body' }), h('div', { id: 'bar' }));
+  drawTabs(); drawBody(); drawBar();
+}
+function drawTabs() {
+  const n = orders.filter(o => o.status === 'new').length;
+  const tabs = [['orders', 'შეკვეთები', n], ['bouquets', 'თაიგულები'], ['flowers', 'ყვავილები (ცალობით)'], ['settings', 'შეფუთვა და მიტანა']];
+  $('#tabs').replaceChildren(...tabs.map(([k, label, b]) => h('button', { class: 'tab', 'aria-pressed': String(tab === k), onclick: () => { tab = k; drawTabs(); drawBody(); } }, label, b ? h('span', { class: 'badge' }, b) : null)));
+}
+function drawBody() {
+  const b = $('#body'); if (!b) return;
+  b.replaceChildren(tab === 'orders' ? viewOrders() : tab === 'bouquets' ? viewBouquets() : tab === 'flowers' ? viewFlowers() : viewSettings());
+}
+function drawBar() {
+  const bar = $('#bar'); if (!bar) return;
+  if (!dirty) { bar.replaceChildren(); return; }
+  bar.replaceChildren(h('div', { class: 'bar' }, h('span', null, 'არის შეუნახავი ცვლილებები'),
+    h('button', { class: 'btn alt', id: 'save', onclick: save }, 'შენახვა')));
+}
+async function save() {
+  const b = $('#save'); if (b) b.disabled = true;
+  try {
+    cat = await api('PUT', '/api/admin/catalog', cat);
+    dirty = false; drawBar(); drawBody(); toast('შენახულია ✓');
+  } catch (e) { if (b) b.disabled = false; if (e.message !== 'auth') toast('შენახვა ვერ მოხერხდა', true); }
+}
+window.addEventListener('beforeunload', e => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
+
+/* ---------- small field builders ---------- */
+const field = (label, input) => h('label', { class: 'f' }, h('span', null, label), input);
+const txt = (o, k, label, max) => field(label, h('input', { type: 'text', maxlength: max || 80, value: o[k] || '', oninput: e => { o[k] = e.target.value; mark(); } }));
+const area = (o, k, label) => field(label, h('textarea', { maxlength: 240, value: o[k] || '', oninput: e => { o[k] = e.target.value; mark(); } }));
+const num = (o, k, label, step, min, max) => field(label, h('input', { type: 'number', inputmode: 'decimal', step: step || '0.5', min: min == null ? 0 : min, max: max, value: o[k], oninput: e => { o[k] = e.target.value === '' ? 0 : +e.target.value; mark(); } }));
+const chk = (o, k, label) => h('label', { class: 'chk' }, h('input', { type: 'checkbox', checked: o[k] !== false, onchange: e => { o[k] = e.target.checked; mark(); drawBody(); } }), label);
+const sel = (o, k, label, opts, asNum) => field(label, h('select', { onchange: e => { o[k] = asNum ? +e.target.value : e.target.value; mark(); } },
+  Object.entries(opts).map(([v, t]) => h('option', { value: v, selected: String(o[k]) === String(v) }, t))));
+function move(list, i, d) { const j = i + d; if (j < 0 || j >= list.length) return; [list[i], list[j]] = [list[j], list[i]]; mark(); drawBody(); }
+const actions = (list, i, label) => h('div', { class: 'acts' },
+  h('button', { class: 'btn ghost sm', 'aria-label': 'ზემოთ', onclick: () => move(list, i, -1) }, '↑'),
+  h('button', { class: 'btn ghost sm', 'aria-label': 'ქვემოთ', onclick: () => move(list, i, 1) }, '↓'),
+  h('span', { class: 'sp' }),
+  h('button', { class: 'btn danger sm', onclick: () => { if (confirm('წაიშალოს: ' + label + '?')) { list.splice(i, 1); mark(); drawBody(); } } }, 'წაშლა'));
+
+/* ---------- bouquets ---------- */
+async function pickPhoto(b, file) {
+  if (!file) return;
+  try {
+    const url = await new Promise((ok, bad) => {
+      const img = new Image(), r = new FileReader();
+      r.onload = () => { img.src = r.result; }; r.onerror = bad;
+      img.onload = () => {
+        const s = Math.min(1, 900 / Math.max(img.width, img.height)), c = document.createElement('canvas');
+        c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); ok(c.toDataURL('image/jpeg', 0.82));
+      };
+      img.onerror = bad; r.readAsDataURL(file);
+    });
+    const j = await api('POST', '/api/admin/upload', { data: url });
+    b.img = j.url; mark(); drawBody();
+  } catch (e) { if (e.message !== 'auth') toast('ფოტოს ატვირთვა ვერ მოხერხდა', true); }
+}
+function viewBouquets() {
+  const cats = [...new Set(cat.bouquets.map(b => b.cat))];
+  const dl = h('datalist', { id: 'cats' }, cats.map(c => h('option', { value: c })));
+  const add = () => { cat.bouquets.unshift({ id: '', n: 'New bouquet', nk: 'ახალი თაიგული', d: '', dk: '', p: 50, cat: cats[0] || 'Bouquets', catK: '', k: ['#FF99A4', '#FFD581'], img: '', inStock: true, active: true }); mark(); drawBody(); };
+  return h('div', null, dl,
+    h('div', { class: 'head' }, h('h2', null, 'თაიგულები (' + cat.bouquets.length + ')'), h('button', { class: 'btn', onclick: add }, '+ ახალი თაიგული')),
+    h('p', { class: 'note' }, 'ინგლისური და ქართული სახელი ცალ-ცალკე ივსება; საიტი ენის მიხედვით აჩვენებს შესაბამისს. თუ ფოტო არ არის, ნაჩვენები იქნება ფერადი ილუსტრაცია.'),
+    cat.bouquets.map((b, i) => {
+      const file = h('input', { type: 'file', accept: 'image/jpeg,image/png,image/webp', hidden: true, onchange: e => pickPhoto(b, e.target.files[0]) });
+      const ph = b.img ? h('img', { class: 'ph', src: b.img, alt: '' }) : h('div', { class: 'ph empty' }, 'ფოტო არ არის');
+      const cols = h('div', { class: 'row' }, b.k.map((c, ci) => h('input', { type: 'color', value: c, 'aria-label': 'ფერი ' + (ci + 1), oninput: e => { b.k[ci] = e.target.value; mark(); } })),
+        b.k.length < 6 ? h('button', { class: 'btn ghost sm', onclick: () => { b.k.push('#FF99A4'); mark(); drawBody(); } }, '+') : null,
+        b.k.length > 1 ? h('button', { class: 'btn ghost sm', onclick: () => { b.k.pop(); mark(); drawBody(); } }, '−') : null);
+      return h('div', { class: 'card' + (b.active === false ? ' off' : '') },
+        h('div', { class: 'bq' },
+          h('div', null, ph, file, h('div', { class: 'row', style: 'margin-top:8px' },
+            h('button', { class: 'btn alt sm', onclick: () => file.click() }, b.img ? 'შეცვლა' : 'ფოტოს არჩევა'),
+            b.img ? h('button', { class: 'btn ghost sm', onclick: () => { b.img = ''; mark(); drawBody(); } }, 'ფოტოს მოხსნა') : null)),
+          h('div', null,
+            h('div', { class: 'grid2' }, txt(b, 'n', 'სახელი (English)'), txt(b, 'nk', 'სახელი (ქართულად)'),
+              area(b, 'd', 'აღწერა (English)'), area(b, 'dk', 'აღწერა (ქართულად)'),
+              num(b, 'p', 'ფასი (₾)', '0.5'),
+              h('div', { class: 'grid2' }, field('კატეგორია (English)', h('input', { type: 'text', maxlength: 40, list: 'cats', value: b.cat || '', oninput: e => { b.cat = e.target.value; mark(); } })), txt(b, 'catK', 'კატეგორია (ქართ.)', 40))),
+            !b.img ? h('div', { style: 'margin-top:10px' }, h('span', { class: 'muted' }, 'ილუსტრაციის ფერები'), cols) : null,
+            h('div', { class: 'row', style: 'margin-top:12px;gap:22px' }, chk(b, 'inStock', 'მარაგშია'), chk(b, 'active', 'ჩანს საიტზე')))),
+        actions(cat.bouquets, i, b.n));
+    }));
+}
+
+/* ---------- flowers ---------- */
+function viewFlowers() {
+  const add = () => { cat.flowers.unshift({ id: '', n: 'New flower', nk: 'ახალი ყვავილი', p: 3, c: '#FF99A4', kind: 'default', img: '', inStock: true, active: true }); mark(); drawBody(); };
+  return h('div', null,
+    h('div', { class: 'head' }, h('h2', null, 'ყვავილები (' + cat.flowers.length + ')'), h('button', { class: 'btn', onclick: add }, '+ ახალი ყვავილი')),
+    h('p', { class: 'note' }, 'ეს ყვავილები ჩანს „ააწყვე შენი თაიგული“ განყოფილებაში. ატვირთე თითოეული ყვავილის ნამდვილი ფოტო (სასურველია ყვავილი ფოტოს ცენტრში იყოს, კვადრატულთან ახლოს) — საიტი მას აჩვენებს ილუსტრაციის ნაცვლად. ფასი არის ერთი ღეროს ფასი. „მარაგშია“ გამორთვით ყვავილი გაყიდულად გამოჩნდება და ვერ აირჩევენ.'),
+    cat.flowers.map((f, i) => {
+      const file = h('input', { type: 'file', accept: 'image/jpeg,image/png,image/webp', hidden: true, onchange: e => pickPhoto(f, e.target.files[0]) });
+      return h('div', { class: 'card' + (f.active === false ? ' off' : '') },
+      h('div', { class: 'row', style: 'align-items:center;margin-bottom:12px' },
+        f.img ? h('img', { src: f.img, alt: '', style: 'width:84px;height:84px;object-fit:cover;border-radius:50%;border:2px solid #FE6F61' }) : h('div', { class: 'ph empty', style: 'width:84px;height:84px;border-radius:50%;display:grid;place-items:center;font-size:.7rem;text-align:center' }, 'ფოტო არ არის'),
+        file,
+        h('button', { class: 'btn alt sm', onclick: () => file.click() }, f.img ? 'ფოტოს შეცვლა' : 'ფოტოს ატვირთვა'),
+        f.img ? h('button', { class: 'btn ghost sm', onclick: () => { f.img = ''; mark(); drawBody(); } }, 'ფოტოს მოხსნა') : null),
+      h('div', { class: 'row', style: 'align-items:flex-end' },
+        h('input', { type: 'color', value: f.c, 'aria-label': 'ყვავილის ფერი', oninput: e => { f.c = e.target.value; mark(); } }),
+        h('div', { style: 'flex:1;min-width:160px' }, txt(f, 'n', 'სახელი (English)', 60)),
+        h('div', { style: 'flex:1;min-width:160px' }, txt(f, 'nk', 'სახელი (ქართულად)', 60)),
+        h('div', { style: 'width:130px' }, num(f, 'p', 'ფასი / ღერი (₾)', '0.1')),
+        h('div', { style: 'min-width:180px' }, sel(f, 'kind', 'ილუსტრაციის ტიპი', KINDS))),
+      h('div', { class: 'row', style: 'margin-top:12px;gap:22px' }, chk(f, 'inStock', 'მარაგშია'), chk(f, 'active', 'ჩანს საიტზე')),
+      actions(cat.flowers, i, f.n)); }));
+}
+
+/* ---------- settings ---------- */
+function viewSettings() {
+  const S = cat.settings;
+  const add = () => { cat.styles.push({ id: '', n: 'New style', nk: 'ახალი სტილი', x: 0, shape: 0, active: true }); mark(); drawBody(); };
+  return h('div', null,
+    h('div', { class: 'head' }, h('h2', null, 'მიტანა, შეფუთვა და სამუშაო საათები')),
+    h('div', { class: 'card' },
+      h('div', { class: 'grid3' },
+        num(S, 'deliveryFee', 'მიტანის საფასური (₾)', '0.5'),
+        num(S, 'serviceFee', 'შეფუთვა და აწყობა — ბაზისური (₾)', '0.5'),
+        h('span'),
+        num(S, 'openHour', 'იხსნება (საათი, 0–23)', '1', 0, 23),
+        num(S, 'closeHour', 'იკეტება (საათი, 1–24)', '1', 1, 24),
+        h('span'),
+        num(S, 'minStems', 'მინიმუმ ღერი ერთ თაიგულში', '1', 1, 100),
+        num(S, 'maxStems', 'მაქსიმუმ ღერი ერთ თაიგულში', '1', 1, 500))),
+    h('div', { class: 'head' }, h('h2', null, 'შეფუთვის სტილები'), h('button', { class: 'btn', onclick: add }, '+ ახალი სტილი')),
+    h('p', { class: 'note' }, 'დამატებითი ფასი ემატება შეფუთვისა და აწყობის ბაზისურ ფასს (თუ 0-ია, სტილი უფასოა). ფორმა არჩეული ილუსტრაციის ტიპია.'),
+    cat.styles.map((s, i) => h('div', { class: 'card' + (s.active === false ? ' off' : '') },
+      h('div', { class: 'grid2' }, txt(s, 'n', 'სახელი (English)', 60), txt(s, 'nk', 'სახელი (ქართულად)', 60),
+        num(s, 'x', 'დამატებითი ფასი (₾)', '0.5'), sel(s, 'shape', 'ფორმა', Object.fromEntries(SHAPES.map((t, k) => [k, t])), true)),
+      h('div', { class: 'row', style: 'margin-top:12px' }, chk(s, 'active', 'ჩანს საიტზე')),
+      actions(cat.styles, i, s.n))));
+}
+
+/* ---------- orders ---------- */
+function viewOrders() {
+  const counts = { all: orders.length }; Object.keys(STATUS).forEach(k => counts[k] = orders.filter(o => o.status === k).length);
+  const list = orders.filter(o => filter === 'all' || o.status === filter);
+  const chips = h('div', { class: 'row', style: 'margin-bottom:14px' }, Object.entries({ all: 'ყველა', ...STATUS }).map(([k, t]) =>
+    h('button', { class: 'tab', 'aria-pressed': String(filter === k), onclick: () => { filter = k; drawBody(); } }, t + ' (' + counts[k] + ')')));
+  return h('div', null,
+    h('div', { class: 'head' }, h('h2', null, 'შეკვეთები'), h('button', { class: 'btn ghost sm', onclick: async () => { await refreshOrders(); toast('განახლდა'); } }, 'განახლება')),
+    h('p', { class: 'note' }, 'გადახდა ჯერ საიტზე არ ხდება: მომხმარებელს ტელეფონით უკავშირდებით, ადასტურებთ და ითანხმებთ გადახდას. ახალი შეკვეთები ავტომატურად ჩნდება (ყოველ 45 წამში).'),
+    chips,
+    list.length ? list.map(o => {
+      const d = new Date(o.createdAt);
+      return h('div', { class: 'card st-' + o.status },
+        h('div', { class: 'os' }, h('b', null, o.no), h('span', { class: 'muted' }, d.toLocaleString('ka-GE', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })), h('span', { class: 'sp' }),
+          h('select', { 'aria-label': 'სტატუსი', style: 'width:auto', onchange: async e => { try { await api('PATCH', '/api/admin/orders/' + o.no, { status: e.target.value }); o.status = e.target.value; knownNew = orders.filter(x => x.status === 'new').length; drawTabs(); drawBody(); } catch (er) { toast('ვერ შეინახა', true); } } },
+            Object.entries(STATUS).map(([k, t]) => h('option', { value: k, selected: o.status === k }, t)))),
+        h('p', { style: 'margin:8px 0 0' }, h('b', null, o.name), ' · ', h('a', { href: 'tel:' + o.phone.replace(/[^0-9+]/g, ''), style: 'color:var(--jasmine)' }, o.phone)),
+        h('p', { style: 'margin:4px 0 0' }, (o.mode === 'delivery' ? 'მიტანა: ' + o.address : 'აღება მაღაზიაში'), ' · ', h('b', null, o.date + ', ' + o.time)),
+        h('ul', { class: 'items' }, o.items.map(it => h('li', null, it.qty + ' × ' + it.name + ' — ' + gel(it.unit), it.detail ? h('small', null, it.detail) : null))),
+        h('div', { class: 'row' }, o.deliveryFee ? h('span', { class: 'muted' }, 'მიტანა: ' + gel(o.deliveryFee)) : null, h('span', { class: 'sp' }), h('span', { class: 'tot' }, 'ჯამი: ' + gel(o.total))),
+        h('div', { class: 'acts' }, h('span', { class: 'sp' }), h('button', { class: 'btn danger sm', onclick: async () => { if (!confirm('წაიშალოს შეკვეთა ' + o.no + '?')) return; try { await api('DELETE', '/api/admin/orders/' + o.no); orders = orders.filter(x => x !== o); drawTabs(); drawBody(); } catch (e) { toast('ვერ წაიშალა', true); } } }, 'წაშლა')));
+    }) : h('div', { class: 'empty' }, 'შეკვეთები ჯერ არ არის.'));
+}
+
+api('GET', '/api/admin/me').then(r => (r.admin ? start() : showLogin())).catch(showLogin);
+</script>
+</body>
+</html>

@@ -55,7 +55,7 @@ function defaults() {
   return {
     settings: { deliveryFee: 8, serviceFee: 6, openHour: 11, closeHour: 23, minStems: 3, maxStems: 100 },
     flowers: [
-      { id: 'f-pink-rose', n: 'Pink rose', nk: 'ვარდისფერი ვარდი', p: 5, c: '#FF99A4', kind: 'default', inStock: true, active: true },
+      { id: 'f-pink-rose', n: 'Pink rose', nk: 'ვარდისფერი ვარდი', p: 5, c: '#FF99A4', kind: 'default', img: '', inStock: true, active: true },
       { id: 'f-yellow-rose', n: 'Yellow rose', nk: 'ყვითელი ვარდი', p: 5, c: '#FFD581', kind: 'default', inStock: true, active: true },
       { id: 'f-coral-rose', n: 'Coral rose', nk: 'მარჯნისფერი ვარდი', p: 5, c: '#FE6F61', kind: 'default', inStock: true, active: true },
       { id: 'f-peony', n: 'Peony', nk: 'პიონი', p: 9, c: '#FFC0CB', kind: 'default', inStock: true, active: true },
@@ -102,6 +102,7 @@ function normCatalog(c) {
   const flowers = uniq(arr(c.flowers).slice(0, 100).map(f => ({
     id: f.id, n: clean(f.n, 60) || 'Flower', nk: clean(f.nk, 60), p: money(f.p, 10000), c: hexc(f.c),
     kind: ['default', 'daisy', 'gerbera', 'greenery'].includes(f.kind) ? f.kind : 'default',
+    img: typeof f.img === 'string' && /^\/uploads\/[a-z0-9-]+\.(jpg|png|webp)$/.test(f.img) ? f.img : '',
     inStock: f.inStock !== false, active: f.active !== false
   })), 'f');
   const styles = uniq(arr(c.styles).slice(0, 20).map(x => ({
@@ -140,7 +141,7 @@ function save() {
   fs.renameSync(tmp, DB_FILE);
 }
 function cleanUploads() {
-  const used = new Set(db.bouquets.map(b => b.img).filter(Boolean).map(u => path.basename(u)));
+  const used = new Set(db.bouquets.concat(db.flowers).map(b => b.img).filter(Boolean).map(u => path.basename(u)));
   for (const f of fs.readdirSync(UP_DIR)) {
     if (/^[a-z0-9-]+\.(jpg|png|webp)$/.test(f) && !used.has(f)) { try { fs.unlinkSync(path.join(UP_DIR, f)); } catch (e) {} }
   }
