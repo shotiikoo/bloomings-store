@@ -235,11 +235,18 @@ function viewBouquets() {
 
 /* ---------- flowers ---------- */
 function viewFlowers() {
-  const add = () => { cat.flowers.unshift({ id: '', n: 'New flower', nk: 'ახალი ყვავილი', p: 3, c: '#FF99A4', kind: 'default', inStock: true, active: true }); mark(); drawBody(); };
+  const add = () => { cat.flowers.unshift({ id: '', n: 'New flower', nk: 'ახალი ყვავილი', p: 3, c: '#FF99A4', kind: 'default', img: '', inStock: true, active: true }); mark(); drawBody(); };
   return h('div', null,
     h('div', { class: 'head' }, h('h2', null, 'ყვავილები (' + cat.flowers.length + ')'), h('button', { class: 'btn', onclick: add }, '+ ახალი ყვავილი')),
-    h('p', { class: 'note' }, 'ეს ყვავილები ჩანს „ააწყვე შენი თაიგული“ განყოფილებაში. ფასი არის ერთი ღეროს ფასი. „მარაგშია“ გამორთვით ყვავილი გაყიდულად გამოჩნდება და ვერ აირჩევენ.'),
-    cat.flowers.map((f, i) => h('div', { class: 'card' + (f.active === false ? ' off' : '') },
+    h('p', { class: 'note' }, 'ეს ყვავილები ჩანს „ააწყვე შენი თაიგული“ განყოფილებაში. ატვირთე თითოეული ყვავილის ნამდვილი ფოტო (სასურველია ყვავილი ფოტოს ცენტრში იყოს, კვადრატულთან ახლოს) — საიტი მას აჩვენებს ილუსტრაციის ნაცვლად. ფასი არის ერთი ღეროს ფასი. „მარაგშია“ გამორთვით ყვავილი გაყიდულად გამოჩნდება და ვერ აირჩევენ.'),
+    cat.flowers.map((f, i) => {
+      const file = h('input', { type: 'file', accept: 'image/jpeg,image/png,image/webp', hidden: true, onchange: e => pickPhoto(f, e.target.files[0]) });
+      return h('div', { class: 'card' + (f.active === false ? ' off' : '') },
+      h('div', { class: 'row', style: 'align-items:center;margin-bottom:12px' },
+        f.img ? h('img', { src: f.img, alt: '', style: 'width:84px;height:84px;object-fit:cover;border-radius:50%;border:2px solid #FE6F61' }) : h('div', { class: 'ph empty', style: 'width:84px;height:84px;border-radius:50%;display:grid;place-items:center;font-size:.7rem;text-align:center' }, 'ფოტო არ არის'),
+        file,
+        h('button', { class: 'btn alt sm', onclick: () => file.click() }, f.img ? 'ფოტოს შეცვლა' : 'ფოტოს ატვირთვა'),
+        f.img ? h('button', { class: 'btn ghost sm', onclick: () => { f.img = ''; mark(); drawBody(); } }, 'ფოტოს მოხსნა') : null),
       h('div', { class: 'row', style: 'align-items:flex-end' },
         h('input', { type: 'color', value: f.c, 'aria-label': 'ყვავილის ფერი', oninput: e => { f.c = e.target.value; mark(); } }),
         h('div', { style: 'flex:1;min-width:160px' }, txt(f, 'n', 'სახელი (English)', 60)),
@@ -247,7 +254,7 @@ function viewFlowers() {
         h('div', { style: 'width:130px' }, num(f, 'p', 'ფასი / ღერი (₾)', '0.1')),
         h('div', { style: 'min-width:180px' }, sel(f, 'kind', 'ილუსტრაციის ტიპი', KINDS))),
       h('div', { class: 'row', style: 'margin-top:12px;gap:22px' }, chk(f, 'inStock', 'მარაგშია'), chk(f, 'active', 'ჩანს საიტზე')),
-      actions(cat.flowers, i, f.n))));
+      actions(cat.flowers, i, f.n)); }));
 }
 
 /* ---------- settings ---------- */
